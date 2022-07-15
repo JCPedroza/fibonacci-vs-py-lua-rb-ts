@@ -176,10 +176,7 @@ def profile_all_fibos(
     print()
 
 
-defaults = {
-    "index": 25,
-    "rounds": 10
-}
+defaults = {"index": 25, "rounds": 10}
 
 
 def ask_num(id):
