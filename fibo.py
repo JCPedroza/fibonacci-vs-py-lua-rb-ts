@@ -1,5 +1,6 @@
 """
-To run me: python fibo.py or python3 fibo.py
+Min python version: 3.10
+Run me with: python fibo.py or python3 fibo.py
 
 Different implementations of the "find the nth Fibonacci number" algorithm,
 with unit tests and time profiling.
