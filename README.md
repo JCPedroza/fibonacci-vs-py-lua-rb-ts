@@ -1,4 +1,4 @@
-# Fibonacci vs Python, TypeScript, Ruby, and OCaml
+# Fibonacci vs Python, Ruby, OCaml, and TypeScript
 
 ## Running the programs
 
@@ -14,24 +14,9 @@ ruby fibo.rb # Execute file
 ocaml fibo.ml # Execute file
 
 # TypeScript Node
-npm install -g ts-node # Install dependencies
-ts-node fibo.ts  # Execute file
+npm install ts-node # Install dependencies
+ts-node fibo.ts     # Execute file
 
 # TypeScript Deno
 deno run fibo.ts # Execute file
-```
-
-## Running static checks
-
-```bash
-# Python
-pip install black flake8 mypy # Install dependencies
-black fibo.py   # Run style checker with auto correct
-flake8 fibo.py  # Run style checker
-mypy fibo.py    # Run type checker
-
-# Ruby
-gem install rubocop # Install dependencies
-rubocop fibo.rb    # Run style checker
-rubocop -A fibo.rb # Run style checker with auto correct
 ```
