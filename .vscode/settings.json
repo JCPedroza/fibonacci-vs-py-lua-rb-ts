@@ -1,0 +1,29 @@
+{
+  "editor.detectIndentation": true,
+  "editor.insertSpaces": true,
+  "files.trimTrailingWhitespace": true,
+
+  "[python]": {
+    "editor.rulers": [
+      88
+    ],
+  },
+
+  "[ruby]": {
+    "editor.rulers": [
+      80
+    ]
+  },
+
+  "[ocaml]": {
+    "editor.rulers": [
+      80
+    ]
+  },
+
+  "[typescript]": {
+    "editor.rulers": [
+      80
+    ]
+  }
+}
