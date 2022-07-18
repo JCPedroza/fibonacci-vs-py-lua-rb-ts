@@ -76,6 +76,19 @@ def fibo_forloop(index: int) -> int:
     return now
 
 
+def fibo_whileloop(index: int) -> int:
+    """Compute nth Fibonacci number using a while loop."""
+
+    now, next = 0, 1
+    num = 0
+
+    while num < index:
+        now, next = next, now + next
+        num += 1
+
+    return now
+
+
 def fibo_analytic(index: int) -> int:
     """Compute nth Fibonacci number using an analytic approach."""
 
@@ -105,6 +118,7 @@ fibos_to_test: list[Callable] = [
     fibo_match,
     fibo_memoized,
     fibo_forloop,
+    fibo_whileloop,
     fibo_analytic,
     fibo_listcomp,
 ]
