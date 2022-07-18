@@ -6,7 +6,9 @@ Different implementations of the "find the nth Fibonacci number" algorithm,
 with unit tests and time profiling.
 """
 
+import argparse
 import sys
+
 from math import sqrt
 from typing import Callable
 from timeit import default_timer as timer
@@ -251,13 +253,23 @@ def ask_num(id: str) -> int:
     return num
 
 
-def ask_params() -> tuple[int, int]:
+def parse_args():
+    """Parse command-line arguments."""
+
+    parser = argparse.ArgumentParser("parser")
+    parser.add_argument("--index", help="index", type=int)
+    parser.add_argument("--rounds", help="rounds", type=int)
+
+    return parser.parse_args()
+
+
+def ask_params(cli_args) -> tuple[int, int]:
     """Ask user for the program parameters."""
 
-    print("\nInput program parameters:")
-    index = ask_num("index")
-    rounds = ask_num("rounds")
-    print("")
+    print()
+    index = cli_args.index or ask_num("index")
+    rounds = cli_args.rounds or ask_num("rounds")
+    print()
 
     return index, rounds
 
@@ -265,6 +277,7 @@ def ask_params() -> tuple[int, int]:
 # Run program
 
 if __name__ == "__main__":
-    index, rounds = ask_params()
+    cli_args = parse_args()
+    index, rounds = ask_params(cli_args)
     test_all(fibos_to_test)
     profile_all(fibos_to_test, index, rounds)
