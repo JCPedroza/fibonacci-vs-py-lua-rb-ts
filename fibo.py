@@ -13,7 +13,7 @@ from math import sqrt
 from typing import Callable
 from timeit import default_timer as timer
 
-defaults = {"index": 25, "rounds": 10}
+defaults = {"index":27  , "rounds": 10}
 
 # Algorithms
 
@@ -27,7 +27,7 @@ def fibo_simple(index: int) -> int:
     return fibo_simple(index - 1) + fibo_simple(index - 2)
 
 
-def fibo_tail(index: int) -> int:
+def fibo_tailrec(index: int) -> int:
     """Compute nth Fibonacci number using tail recursion."""
 
     def loop(now, next, index):
@@ -116,7 +116,7 @@ def fibo_listcomp(index: int) -> int:
 # Add algorithm here to be included in unit testing and time profiling.
 fibos_to_test: list[Callable] = [
     fibo_simple,
-    fibo_tail,
+    fibo_tailrec,
     fibo_match,
     fibo_memoized,
     fibo_forloop,
@@ -193,8 +193,7 @@ def test_all(fibos_to_test: list[Callable], verbose: bool = True) -> None:
     sorted_results = sorted(results, key=(lambda a: a[1]))
 
     print("All unit tests passed!", end="\r\n")
-    print("\nAlgorithms sorted by the total run time of unit tests")
-    print("(in rounded milliseconds):\n")
+    print("\nAlgorithms sorted by the total run time of unit tests\n")
 
     for name, time in sorted_results:
         print_result(name, time)
@@ -230,8 +229,8 @@ def profile_all(fibos_to_profile: list[Callable], index: int, rounds: int) -> No
         results.append((fib.__name__, profile(fib, index, rounds)))
 
     sorted_results = sorted(results, key=(lambda a: a[1]))
-    print("\nAlgorithms sorted by total profile time for")
-    print(f"index: {index} and rounds: {rounds} (in rounded milliseconds):\n")
+    print(f"\nProfile for calculating the {index} Fibonacci number")
+    print(f"{rounds} consecutive times:\n")
 
     for name, time in sorted_results:
         print_result(name, time)
@@ -241,13 +240,13 @@ def profile_all(fibos_to_profile: list[Callable], index: int, rounds: int) -> No
 # User input
 
 
-def ask_num(id: str) -> int:
+def ask_int(id: str, default: int) -> int:
     """Ask user for numeric input."""
 
     try:
         num = int(input(f"{id}? "))
     except:
-        print("Not a number, default will be used...")
+        print(f"Not a number, default {default} will be used,")
         num = defaults[id]
 
     return num
@@ -267,8 +266,8 @@ def ask_params(cli_args) -> tuple[int, int]:
     """Ask user for the program parameters."""
 
     print()
-    index = cli_args.index or ask_num("index")
-    rounds = cli_args.rounds or ask_num("rounds")
+    index = cli_args.index or ask_int("index", defaults["index"])
+    rounds = cli_args.rounds or ask_int("rounds", defaults["rounds"])
     print()
 
     return index, rounds
