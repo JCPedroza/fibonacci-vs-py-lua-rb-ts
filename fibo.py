@@ -6,9 +6,14 @@ Different implementations of the "find the nth Fibonacci number" algorithm,
 with unit tests and time profiling.
 """
 
+import sys
 from math import sqrt
 from typing import Callable
 from timeit import default_timer as timer
+
+defaults = {"index": 25, "rounds": 10}
+
+# Algorithms
 
 
 def fibo_simple(index: int) -> int:
@@ -45,7 +50,7 @@ def fibo_match(index: int) -> int:
             return fibo_match(n - 1) + fibo_match(n - 2)
 
 
-def fibo_memo(index: int) -> int:
+def fibo_memoized(index: int) -> int:
     """Compute nth Fibonacci number using memoization."""
 
     results: dict[int, int] = {0: 0, 1: 1}
@@ -60,7 +65,7 @@ def fibo_memo(index: int) -> int:
     return loop(index)
 
 
-def fibo_for(index: int) -> int:
+def fibo_forloop(index: int) -> int:
     """Compute nth Fibonacci number using a for loop."""
 
     now, next = 0, 1
@@ -81,13 +86,13 @@ def fibo_analytic(index: int) -> int:
     p = (1 + sqrt5) / 2
     q = 1 / p
 
-    return int((p ** index + q ** index) / sqrt5 + 0.5)
+    return int((p**index + q**index) / sqrt5 + 0.5)
 
 
-def fibo_comp(index: int) -> int:
+def fibo_listcomp(index: int) -> int:
     """Compute nth Fibonacci number using a list comprehension."""
 
-    # Doesn't type check...
+    # Doesn't type check, check mypy
     xs = [0, 1]
     xs += [(xs := [xs[1], xs[0] + xs[1]]) and xs[1] for k in range(index)]
     return xs[index]
@@ -98,17 +103,48 @@ fibos_to_test: list[Callable] = [
     fibo_simple,
     fibo_tail,
     fibo_match,
-    fibo_memo,
-    fibo_for,
+    fibo_memoized,
+    fibo_forloop,
     fibo_analytic,
-    fibo_comp,
+    fibo_listcomp,
 ]
 
+# Printing
 
-def test_fibo(fib: Callable) -> tuple[str, float]:
+
+def fun_name_len(fun: Callable) -> int:
+    """Count the number of chatacters in a function name."""
+    return len(fun.__name__)
+
+
+def pad_len(funs: list[Callable]) -> int:
+    """Compute length of padding used to align columns during printing."""
+    return fun_name_len(max(funs, key=fun_name_len))
+
+
+STR_PAD_EXTRA = 1
+STR_PAD = pad_len(fibos_to_test) + STR_PAD_EXTRA
+
+
+def result_to_str(name: str, time: float, decimals: int = 3) -> str:
+    """Convert a result into a padded string."""
+    return f"{name: <{STR_PAD}} {round(time, decimals)}"
+
+
+def print_result(name: str, time: float, decimals: int = 3) -> None:
+    """Print result as a padded string."""
+    print(result_to_str(name, time, decimals))
+
+
+# Unit testing
+
+
+def test(fib: Callable, verbose: bool = True) -> tuple[str, float]:
     """Run unit tests for one algorithm and print result."""
 
-    print(f"\ntesting {fib.__name__}...")
+    if verbose:
+        print(f"Testing algorithm {fib.__name__}...", end="\r")
+
     start = timer()
 
     assert fib(0) == 0
@@ -123,64 +159,75 @@ def test_fibo(fib: Callable) -> tuple[str, float]:
     end = timer()
     total = (end - start) * 1000
     result = (fib.__name__, total)
-    print(f"  ...{fib.__name__} passed all tests!")
+
+    if verbose:
+        sys.stdout.write("\033[K")  # Delete line
 
     return result
 
 
-def test_all_fibos(fibos_to_test: list[Callable]) -> None:
+def test_all(fibos_to_test: list[Callable], verbose: bool = True) -> None:
     """Run all unit tests for all algorithms and print results."""
 
     results = []
 
     for fib in fibos_to_test:
-        results.append(test_fibo(fib))
+        results.append(test(fib))
 
     sorted_results = sorted(results, key=(lambda a: a[1]))
+
+    print("All unit tests passed!", end="\r\n")
     print("\nAlgorithms sorted by the total run time of unit tests")
     print("(in rounded milliseconds):\n")
 
     for name, time in sorted_results:
-        print(f"{name}: {round(time, 3)}")
+        print_result(name, time)
     print()
 
 
-def profile_fibo(fib: Callable, index: int, rounds: int) -> float:
+# Time profiling
+
+
+def profile(fib: Callable, index: int, rounds: int, verbose: bool = True) -> float:
     "Run time profiling for one algorithm."
 
-    print(f"Profiling {fib.__name__}...")
-    start = timer()
+    if verbose:
+        print(f"Profiling {fib.__name__}...", end="\r")
 
+    start = timer()
     for _ in range(rounds):
         fib(index)
-
     end = timer()
+
+    if verbose:
+        sys.stdout.write("\033[K")  # Delete line
+
     return (end - start) * 1000
 
 
-def profile_all_fibos(
-    fibos_to_profile: list[Callable], index: int, rounds: int
-) -> None:
+def profile_all(fibos_to_profile: list[Callable], index: int, rounds: int) -> None:
     """Run all time profiles for all algorithms and print results."""
+
     results = []
 
     for fib in fibos_to_profile:
-        results.append((fib.__name__, profile_fibo(fib, index, rounds)))
+        results.append((fib.__name__, profile(fib, index, rounds)))
 
     sorted_results = sorted(results, key=(lambda a: a[1]))
     print("\nAlgorithms sorted by total profile time for")
     print(f"index: {index} and rounds: {rounds} (in rounded milliseconds):\n")
 
     for name, time in sorted_results:
-        print(f"{name}: {round(time, 3)}")
+        print_result(name, time)
     print()
 
 
-defaults = {"index": 25, "rounds": 10}
+# User input
 
 
-def ask_num(id):
+def ask_num(id: str) -> int:
     """Ask user for numeric input."""
+
     try:
         num = int(input(f"{id}? "))
     except:
@@ -190,10 +237,20 @@ def ask_num(id):
     return num
 
 
-if __name__ == "__main__":
-    print("\nPlease specify profile parameters:")
+def ask_params() -> tuple[int, int]:
+    """Ask user for the program parameters."""
+
+    print("\nInput program parameters:")
     index = ask_num("index")
     rounds = ask_num("rounds")
+    print("")
 
-    test_all_fibos(fibos_to_test)
-    profile_all_fibos(fibos_to_test, index, rounds)
+    return index, rounds
+
+
+# Run program
+
+if __name__ == "__main__":
+    index, rounds = ask_params()
+    test_all(fibos_to_test)
+    profile_all(fibos_to_test, index, rounds)
