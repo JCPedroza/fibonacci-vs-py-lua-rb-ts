@@ -6,7 +6,7 @@
   "[python]": {
     "editor.rulers": [
       88
-    ],
+    ]
   },
 
   "[ruby]": {
@@ -15,7 +15,7 @@
     ]
   },
 
-  "[ocaml]": {
+  "[lua]": {
     "editor.rulers": [
       80
     ]

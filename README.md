@@ -1,4 +1,4 @@
-# Fibonacci vs Python, Ruby, OCaml, and TypeScript
+# Fibonacci vs Python, Lua, Ruby, and TypeScript
 
 ## Running the programs
 
@@ -9,9 +9,6 @@ python3 fibo.py # Execute file
 
 # Ruby
 ruby fibo.rb # Execute file
-
-# OCaml
-ocaml fibo.ml # Execute file
 
 # TypeScript Node
 npm install ts-node # Install dependencies
