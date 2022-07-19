@@ -27,13 +27,13 @@ def fibo_simple(index: int) -> int:
     return fibo_simple(index - 1) + fibo_simple(index - 2)
 
 
-def fibo_tailrec(index: int) -> int:
+def fibo_tailcall(index: int) -> int:
     """Compute nth Fibonacci number using tail recursion."""
 
-    def loop(now, next, index):
+    def loop(now, nxt, index):
         if index < 1:
             return now
-        return loop(next, now + next, index - 1)
+        return loop(nxt, now + nxt, index - 1)
 
     return loop(0, 1, index)
 
@@ -70,10 +70,10 @@ def fibo_memoized(index: int) -> int:
 def fibo_forloop(index: int) -> int:
     """Compute nth Fibonacci number using a for loop."""
 
-    now, next = 0, 1
+    now, nxt = 0, 1
 
     for num in range(index):
-        now, next = next, now + next
+        now, nxt = nxt, now + nxt
 
     return now
 
@@ -81,11 +81,11 @@ def fibo_forloop(index: int) -> int:
 def fibo_whileloop(index: int) -> int:
     """Compute nth Fibonacci number using a while loop."""
 
-    now, next = 0, 1
+    now, nxt = 0, 1
     num = 0
 
     while num < index:
-        now, next = next, now + next
+        now, nxt = nxt, now + nxt
         num += 1
 
     return now
@@ -113,16 +113,33 @@ def fibo_listcomp(index: int) -> int:
     return xs[index]
 
 
+def fibo_generator(index: int) -> int:
+    """Compute nth Fibonacci number using a generator function."""
+
+    def genloop():
+        now, nxt = 0, 1
+        while True:
+            yield now
+            now, nxt = nxt, now + nxt
+
+    gen = genloop()
+    for _ in range(index):
+        next(gen)
+
+    return next(gen)
+
+
 # Add algorithm here to be included in unit testing and time profiling.
 fibos_to_test: list[Callable] = [
     fibo_simple,
-    fibo_tailrec,
+    fibo_tailcall,
     fibo_match,
     fibo_memoized,
     fibo_forloop,
     fibo_whileloop,
     fibo_analytic,
     fibo_listcomp,
+    fibo_generator
 ]
 
 # Printing
