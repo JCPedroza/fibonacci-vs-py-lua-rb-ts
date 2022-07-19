@@ -13,7 +13,7 @@ from math import sqrt
 from typing import Callable
 from timeit import default_timer as timer
 
-defaults = {"index":27  , "rounds": 10}
+defaults = {"index": 27, "rounds": 10}
 
 # Algorithms
 
@@ -139,7 +139,7 @@ fibos_to_test: list[Callable] = [
     fibo_whileloop,
     fibo_analytic,
     fibo_listcomp,
-    fibo_generator
+    fibo_generator,
 ]
 
 # Printing
