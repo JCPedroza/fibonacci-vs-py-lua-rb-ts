@@ -72,7 +72,7 @@ def fibo_forloop(index: int) -> int:
 
     now, nxt = 0, 1
 
-    for num in range(index):
+    for _ in range(index):
         now, nxt = nxt, now + nxt
 
     return now
