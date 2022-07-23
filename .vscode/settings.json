@@ -23,7 +23,7 @@
 
   "[typescript]": {
     "editor.rulers": [
-      80
+      88
     ]
   }
 }
