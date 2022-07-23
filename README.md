@@ -4,16 +4,17 @@
 
 ```bash
 # Python
-python fibo.py  # Execute file
-python3 fibo.py # Execute file
+python fibo.py
+
+# Lua
+lua fibo.lua
 
 # Ruby
-ruby fibo.rb # Execute file
+ruby fibo.rb
 
 # TypeScript Node
-npm install ts-node # Install dependencies
-ts-node fibo.ts     # Execute file
+ts-node fibo.ts
 
 # TypeScript Deno
-deno run fibo.ts # Execute file
+deno run fibo.ts
 ```
