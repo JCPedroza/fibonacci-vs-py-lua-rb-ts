@@ -27,8 +27,8 @@ def fibo_simple(index: int) -> int:
     return fibo_simple(index - 1) + fibo_simple(index - 2)
 
 
-def fibo_tailcall(index: int) -> int:
-    """Compute nth Fibonacci number using tail recursion."""
+def fibo_tail_call(index: int) -> int:
+    """Compute nth Fibonacci number using tail call."""
 
     def loop(now, nxt, index):
         if index < 1:
@@ -132,7 +132,7 @@ def fibo_generator(index: int) -> int:
 # Add algorithm here to be included in unit testing and time profiling.
 fibos_to_test: list[Callable] = [
     fibo_simple,
-    fibo_tailcall,
+    fibo_tail_call,
     fibo_match,
     fibo_memoized,
     fibo_forloop,
@@ -199,7 +199,7 @@ def test(fib: Callable, verbose: bool = True) -> tuple[str, float]:
     return result
 
 
-def test_all(fibos_to_test: list[Callable], verbose: bool = True) -> None:
+def test_all(fibos_to_test: list[Callable]) -> None:
     """Run all unit tests for all algorithms and print results."""
 
     results = []
@@ -257,14 +257,14 @@ def profile_all(fibos_to_profile: list[Callable], index: int, rounds: int) -> No
 # User input
 
 
-def ask_int(id: str, default: int) -> int:
+def ask_int(label: str, default: int) -> int:
     """Ask user for numeric input."""
 
     try:
-        num = int(input(f"{id}? "))
+        num = int(input(f"{label}? "))
     except:
         print(f"Not a number, default {default} will be used,")
-        num = defaults[id]
+        num = defaults[label]
 
     return num
 
