@@ -18,13 +18,25 @@ defaults = {"index": 27, "rounds": 10}
 # Algorithms
 
 
-def fibo_simple(index: int) -> int:
+def fibo_simple_if(index: int) -> int:
     """Compute nth Fibonacci number using simple recursion."""
 
     if index < 2:
         return index
 
-    return fibo_simple(index - 1) + fibo_simple(index - 2)
+    return fibo_simple_if(index - 1) + fibo_simple_if(index - 2)
+
+
+def fibo_simple_match(index: int) -> int:
+    """Compute nth Fibonacci number using simple recursion and
+    pattern matching.
+    """
+
+    match index < 2:
+        case True:
+            return index
+        case _:
+            return fibo_simple_match(index - 1) + fibo_simple_match(index - 2)
 
 
 def fibo_tail_call(index: int) -> int:
@@ -36,20 +48,6 @@ def fibo_tail_call(index: int) -> int:
         return loop(nxt, now + nxt, index - 1)
 
     return loop(0, 1, index)
-
-
-def fibo_match(index: int) -> int:
-    """Compute nth Fibonacci number using simple recursion and
-    pattern matching.
-    """
-
-    match index:
-        case 0:
-            return 0
-        case 1:
-            return 1
-        case n:
-            return fibo_match(n - 1) + fibo_match(n - 2)
 
 
 def fibo_memoized(index: int) -> int:
@@ -131,9 +129,9 @@ def fibo_generator(index: int) -> int:
 
 # Add algorithm here to be included in unit testing and time profiling.
 fibos_to_test: list[Callable] = [
-    fibo_simple,
+    fibo_simple_if,
     fibo_tail_call,
-    fibo_match,
+    fibo_simple_match,
     fibo_memoized,
     fibo_forloop,
     fibo_whileloop,
