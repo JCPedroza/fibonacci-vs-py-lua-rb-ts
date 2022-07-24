@@ -8,13 +8,12 @@ python fibo.py
 
 # Lua
 lua fibo.lua
+luajit fibo.lua
 
 # Ruby
 ruby fibo.rb
 
-# TypeScript Node
+# TypeScript
 ts-node fibo.ts
-
-# TypeScript Deno
 deno run fibo.ts
 ```
