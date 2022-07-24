@@ -28,10 +28,9 @@ end
 
 # Compute nth Fibonacci number using the times method.
 def fibo_times_loop(index)
-  return index if index < 2
-
   now, nxt = 0, 1
-  (index).times do
+
+  index.times do
     now, nxt = nxt, now + nxt
   end
 
