@@ -19,7 +19,7 @@ defaults = {"index": 27, "rounds": 10}
 
 
 def fibo_simple_if(index: int) -> int:
-    """Compute nth Fibonacci number using simple recursion."""
+    """Compute nth Fibonacci number using simple recursion and if statement."""
 
     if index < 2:
         return index
@@ -65,7 +65,7 @@ def fibo_memoized(index: int) -> int:
     return loop(index)
 
 
-def fibo_forloop(index: int) -> int:
+def fibo_for_loop(index: int) -> int:
     """Compute nth Fibonacci number using a for loop."""
 
     now, nxt = 0, 1
@@ -76,7 +76,7 @@ def fibo_forloop(index: int) -> int:
     return now
 
 
-def fibo_whileloop(index: int) -> int:
+def fibo_while_loop(index: int) -> int:
     """Compute nth Fibonacci number using a while loop."""
 
     now, nxt = 0, 1
@@ -89,8 +89,8 @@ def fibo_whileloop(index: int) -> int:
     return now
 
 
-def fibo_analytic(index: int) -> int:
-    """Compute nth Fibonacci number using an analytic approach."""
+def fibo_binet(index: int) -> int:
+    """Compute nth Fibonacci number using Binet's formula."""
 
     if index == 0:  # Otherwise f(0) = 1
         return 0
@@ -102,7 +102,7 @@ def fibo_analytic(index: int) -> int:
     return int((p**index + q**index) / sqrt5 + 0.5)
 
 
-def fibo_listcomp(index: int) -> int:
+def fibo_list_comp(index: int) -> int:
     """Compute nth Fibonacci number using a list comprehension."""
 
     # Doesn't type check, check mypy
@@ -133,10 +133,10 @@ fibos_to_test: list[Callable] = [
     fibo_tail_call,
     fibo_simple_match,
     fibo_memoized,
-    fibo_forloop,
-    fibo_whileloop,
-    fibo_analytic,
-    fibo_listcomp,
+    fibo_for_loop,
+    fibo_while_loop,
+    fibo_binet,
+    fibo_list_comp,
     fibo_generator,
 ]
 
