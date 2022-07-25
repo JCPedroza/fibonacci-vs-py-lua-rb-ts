@@ -7,13 +7,14 @@ with unit tests and time profiling.
 """
 
 import argparse
+from cmath import log
 import sys
 
 from math import sqrt
 from typing import Callable
 from timeit import default_timer as timer
 
-defaults = {"index": 27, "rounds": 10}
+defaults = {"index": 27, "reps": 10}
 
 # Algorithms
 
@@ -128,7 +129,7 @@ def fibo_generator(index: int) -> int:
 
 
 # Add algorithm here to be included in unit testing and time profiling.
-fibos_to_test: list[Callable] = [
+fibs: list[Callable] = [
     fibo_simple_if,
     fibo_tail_call,
     fibo_simple_match,
@@ -154,7 +155,7 @@ def pad_len(funs: list[Callable]) -> int:
 
 
 STR_PAD_EXTRA = 1
-STR_PAD = pad_len(fibos_to_test) + STR_PAD_EXTRA
+STR_PAD = pad_len(fibs) + STR_PAD_EXTRA
 
 
 def result_to_str(name: str, time: float, decimals: int = 3) -> str:
@@ -170,11 +171,10 @@ def print_result(name: str, time: float, decimals: int = 3) -> None:
 # Unit testing
 
 
-def test(fib: Callable, verbose: bool = True) -> tuple[str, float]:
+def test(fib: Callable) -> tuple[str, float]:
     """Run unit tests for one algorithm and print result."""
 
-    if verbose:
-        print(f"Testing algorithm {fib.__name__}...", end="\r")
+    print(f"Testing algorithm {fib.__name__}...", end="\r")
 
     start = timer()
 
@@ -191,18 +191,16 @@ def test(fib: Callable, verbose: bool = True) -> tuple[str, float]:
     total = (end - start) * 1000
     result = (fib.__name__, total)
 
-    if verbose:
-        sys.stdout.write("\033[K")  # Delete line
-
+    sys.stdout.write("\033[K")  # Delete line
     return result
 
 
-def test_all(fibos_to_test: list[Callable]) -> None:
+def test_all(fibs: list[Callable]) -> None:
     """Run all unit tests for all algorithms and print results."""
 
     results = []
 
-    for fib in fibos_to_test:
+    for fib in fibs:
         results.append(test(fib))
 
     sorted_results = sorted(results, key=(lambda a: a[1]))
@@ -218,34 +216,64 @@ def test_all(fibos_to_test: list[Callable]) -> None:
 # Time profiling
 
 
-def profile(fib: Callable, index: int, rounds: int, verbose: bool = True) -> float:
-    "Run time profiling for one algorithm."
+def profile(fib: Callable, index: int, reps: int) -> float:
+    """Run time (ms) profiling for one algorithm."""
 
-    if verbose:
-        print(f"Profiling {fib.__name__}...", end="\r")
+    print(f"Profiling {fib.__name__}...", end="\r")
 
-    start = timer()
-    for _ in range(rounds):
+    total = 0.0
+    for _ in range(reps):
+        start = timer()
         fib(index)
-    end = timer()
+        end = timer()
+        total += end - start
 
-    if verbose:
-        sys.stdout.write("\033[K")  # Delete line
-
-    return (end - start) * 1000
+    sys.stdout.write("\033[K")  # Delete line
+    return total * 1000
 
 
-def profile_all(fibos_to_profile: list[Callable], index: int, rounds: int) -> None:
-    """Run all time profiles for all algorithms and print results."""
+def profile_range(fib: Callable, begin: int, end: int, reps: int) -> float:
+    """Profile running time (ms) of a function called with a range of arguments."""
+
+    print(f"Profiling {fib.__name__}...", end="\r")
+
+    total = 0.0
+    for _ in range(reps):
+        for index in range(begin, end):
+            start = timer()
+            fib(index)
+            total += timer() - start
+
+    sys.stdout.write("\033[K")  # Delete line
+    return total * 1000
+
+
+def profile_all(fibs: list[Callable], index: int, reps: int) -> None:
+    """Run profiling for all algorithms and print results."""
 
     results = []
 
-    for fib in fibos_to_profile:
-        results.append((fib.__name__, profile(fib, index, rounds)))
+    for fib in fibs:
+        results.append((fib.__name__, profile(fib, index, reps)))
 
-    sorted_results = sorted(results, key=(lambda a: a[1]))
-    print(f"\nProfile for calculating the {index} Fibonacci number")
-    print(f"{rounds} consecutive times:\n")
+    sorted_results = sorted(results, key=lambda a: a[1])
+    print(f"\nProfile for index: {index} reps: {reps}")
+
+    for name, time in sorted_results:
+        print_result(name, time)
+    print()
+
+
+def profile_all_range(fibs: list[Callable], begin: int, end: int, reps: int) -> None:
+    """Run range profiling for all algorithms and pring results"""
+
+    results = []
+
+    for fib in fibs:
+        results.append((fib.__name__, profile_range(fib, begin, end, reps)))
+
+    sorted_results = sorted(results, key=lambda a: a[1])
+    print(f"\nRange profile for begin: {begin} end: {end} reps: {reps}")
 
     for name, time in sorted_results:
         print_result(name, time)
@@ -272,7 +300,7 @@ def parse_args():
 
     parser = argparse.ArgumentParser("parser")
     parser.add_argument("--index", help="index", type=int)
-    parser.add_argument("--rounds", help="rounds", type=int)
+    parser.add_argument("--reps", help="reps", type=int)
 
     return parser.parse_args()
 
@@ -282,16 +310,19 @@ def ask_params(cli_args) -> tuple[int, int]:
 
     print()
     index = cli_args.index or ask_int("index", defaults["index"])
-    rounds = cli_args.rounds or ask_int("rounds", defaults["rounds"])
+    reps = cli_args.reps or ask_int("reps", defaults["reps"])
     print()
 
-    return index, rounds
+    return index, reps
 
 
 # Run program
 
 if __name__ == "__main__":
     cli_args = parse_args()
-    index, rounds = ask_params(cli_args)
-    test_all(fibos_to_test)
-    profile_all(fibos_to_test, index, rounds)
+    index, reps = ask_params(cli_args)
+    test_all(fibs)
+    profile_all(fibs, index, reps)
+    profile_all_range(fibs, 0, 27, 10)
+
+# TODO range profile parameters from cli
