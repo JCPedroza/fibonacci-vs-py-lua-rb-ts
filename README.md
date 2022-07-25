@@ -3,17 +3,17 @@
 ## Running the programs
 
 ```bash
-# Python
+# Python 3.10
 python fibo.py
 
-# Lua
+# Lua 5.1
 lua fibo.lua
 luajit fibo.lua
 
-# Ruby
+# Ruby 3.0
 ruby fibo.rb
 
-# TypeScript
+# TypeScript 4.7
 ts-node fibo.ts
 deno run fibo.ts
 ```
