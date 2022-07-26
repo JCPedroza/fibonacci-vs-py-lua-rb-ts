@@ -1,3 +1,5 @@
+local test = require 'test'
+
 -- Compute nth Fibonacci number using simple recursion with if statement.
 local function fibo_simple(index)
   if index < 2 then
@@ -47,7 +49,7 @@ local function fibo_for_loop(index)
   return now
 end
 
--- Compute nth Fibonacci number using Biner's formula.
+-- Compute nth Fibonacci number using Binet's formula.
 local function fibo_binet(index)
   if index == 0 then -- Otherwise f(0) = 1
     return 0
@@ -61,14 +63,12 @@ local function fibo_binet(index)
 end
 
 -- Algorithms to unit test and profile.
-local fibos_to_test = {
-  fibo_simple,
-  fibo_tail_call,
-  fibo_memoized,
-  fibo_for_loop,
-  fibo_binet
+local fibos = {
+  {fibo_simple, 'fibo_simple'},
+  {fibo_tail_call, 'fibo_tail_call'},
+  {fibo_memoized, 'fibo_memoized'},
+  {fibo_for_loop, 'fibo_for_loop'},
+  {fibo_binet, 'fibo_binet'}
 }
 
-for _, fibo in ipairs(fibos_to_test) do
-  print(fibo(6))
-end
+test.test_all_functions(fibos)
