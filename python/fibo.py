@@ -131,8 +131,35 @@ def fibo_binet(index: int) -> int:
     return int((p**index + q**index) / sqrt5 + 0.5)
 
 
+# http://www.oranlooney.com/post/fibonacci/
+# Helpers for fibo_matrix
+
+
+def multiply_matrix(mtrx_a, mtrx_b):
+    a, b, c, d = mtrx_a
+    x, y, z, w = mtrx_b
+
+    return [a * x + b * z, a * y + b * w, c * x + d * z, c * y + d * w]
+
+
+def naive_matrix_power(mtrx_a, exp):
+    if exp == 0:
+        return [1, 0, 0, 1]
+
+    mtrx_b = mtrx_a
+    for _ in range(exp - 1):
+        mtrx_b = multiply_matrix(mtrx_b, mtrx_a)
+
+    return mtrx_b
+
+
+def fibo_matrix(index: int) -> int:
+    """Compute nth Fibonacci number using matrix multiplication."""
+    return naive_matrix_power([1, 1, 1, 0], index)[1]
+
+
 # Add algorithm here to be included in unit testing and time profiling.
-fibs: list[Callable] = [
+fibos: list[Callable] = [
     fibo_simple_if,
     fibo_tail_call,
     fibo_simple_match,
@@ -142,14 +169,15 @@ fibs: list[Callable] = [
     fibo_binet,
     fibo_list_comp,
     fibo_generator,
+    fibo_matrix,
 ]
 
 
 if __name__ == "__main__":
     cli_args = parse_args()
     index, reps = ask_params(cli_args)
-    test_all(fibs)
-    profile_all(fibs, index, reps)
-    profile_all_range(fibs, 3, 27, 10)
+    test_all(fibos)
+    profile_all(fibos, index, reps)
+    profile_all_range(fibos, 3, 27, 10)
 
 # TODO range profile parameters from cli
