@@ -4,16 +4,17 @@
 
 ```bash
 # Python 3.10
-python fibo.py
+python python/fibo.py
 
 # Lua 5.1
-lua fibo.lua
-luajit fibo.lua
+lua lua/fibo.lua
+luajit lua/fibo.lua
 
 # Ruby 3.0
-ruby fibo.rb
+ruby ruby/fibo.rb
 
 # TypeScript 4.7
-ts-node fibo.ts
-deno run fibo.ts
+ts-node typescript/fibo.ts
+deno typescript/run fibo.ts
+bun typescript/fibo.ts
 ```

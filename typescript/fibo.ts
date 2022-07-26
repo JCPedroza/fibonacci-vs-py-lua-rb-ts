@@ -1,11 +1,11 @@
 // Compute nth Fibonacci number using simple recursion.
-function fiboSimple(index: number): number {
+function fiboSimpleIf(index: number): number {
   if (index < 2) return index
 
-  return fiboSimple(index - 1) + fiboSimple(index - 2)
+  return fiboSimpleIf(index - 1) + fiboSimpleIf(index - 2)
 }
 
-// Compute nth Fibonacci number using simpre recursion and a switch.
+// Compute nth Fibonacci number using simple recursion and a switch.
 function fiboSimpleSwitch(index: number): number {
   switch (index < 2) {
     case true:
@@ -14,7 +14,6 @@ function fiboSimpleSwitch(index: number): number {
       return fiboSimpleSwitch(index - 1) + fiboSimpleSwitch(index - 2)
   }
 }
-
 
 // Compute nth Fibonacci number using tail call.
 function fiboTailCall(index: number ): number {
@@ -97,16 +96,50 @@ function fiboWhileLoop(index: number): number {
   return now
 }
 
+// Compute nth Fibonacci number using a generator function.
+function fiboGenerator(index: number): number {
+  function * genloop() {
+    let now = 0
+    let next = 1
+
+    while (true) {
+      yield now
+      ;[now, next] = [next, now + next]
+    }
+  }
+
+  const gen = genloop()
+  for (let count = 0; count < index; count++) {
+    gen.next()
+  }
+
+  return gen.next().value!
+}
+
+// Compute nth Fibonacci number using Binet's formula.
+function fiboBinet(index: number): number {
+  if (index === 0) return 0 // Otherwise f(0) = 1
+
+  const sqrt5 = Math.sqrt(5)
+  const p = (1 + sqrt5) / 2
+  const q = 1 / p
+
+  return Math.trunc((p**index + q**index) / sqrt5 + 0.5)
+}
+
+
 // Algorithms to unit test and profile.
 const fibosToTest: Function[] = [
-  fiboSimple,
+  fiboSimpleIf,
   fiboSimpleSwitch,
   fiboTailCall,
   fiboMemoizedArray,
   fiboMemoizedObject,
   fiboMemoizedMap,
   fiboForLoop,
-  fiboWhileLoop
+  fiboWhileLoop,
+  fiboBinet,
+  fiboGenerator
 ]
 
 // Testing
@@ -134,11 +167,8 @@ const assertAll = (fun: Function) => {
 }
 
 // Perform unit tests for one algorithm.
-const testFunction = (fun: Function, verbose: boolean = true) => {
-  if (verbose) {
-    console.log(`Testing algorithm ${fun.name}...`)
-  }
-
+const testFunction = (fun: Function) => {
+  console.log(`Testing algorithm ${fun.name}...`)
   assertAll(fun)
 }
 
