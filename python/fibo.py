@@ -3,15 +3,6 @@ Min python version: 3.10
 
 Different implementations of the "find the nth Fibonacci number" algorithm,
 with unit tests and time profiling.
-
-(this should be for JS lol)
-Number.MAX_SAFE_ITEGER is     9_007_199_254_740_991
-The 78th Fibonacci number is  8_944_394_323_791_464
-The 79th Fibonacci number is 14_472_334_024_676_221
-
-This program doesn't use BigInt, so the limit for the index of these algorithms is
-f(78) at best, perhaps lower for some closed-form solutions that lose accuracy at
-large values.
 """
 
 from math import sqrt
