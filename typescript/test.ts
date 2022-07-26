@@ -8,7 +8,7 @@ const assertEquals = (fun: Function, arg: number, out: number) => {
   }
 }
 
-// Run all unit test assertions.
+// Run all unit test assertions for one function.
 const assertAll = (fun: Function) => {
   assertEquals(fun, 0, 0)
   assertEquals(fun, 1, 1)
