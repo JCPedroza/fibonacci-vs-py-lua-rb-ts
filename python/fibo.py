@@ -123,7 +123,12 @@ def multiply_matrix(mtrx_a, mtrx_b):
     a, b, c, d = mtrx_a
     x, y, z, w = mtrx_b
 
-    return [a * x + b * z, a * y + b * w, c * x + d * z, c * y + d * w]
+    return [
+        a * x + b * z,
+        a * y + b * w,
+        c * x + d * z,
+        c * y + d * w,
+    ]
 
 
 def naive_matrix_power(mtrx_a, exp):
@@ -138,8 +143,41 @@ def naive_matrix_power(mtrx_a, exp):
 
 
 def fibo_matrix_naive(index: int) -> int:
-    """Compute nth Fibonacci number using matrix multiplication."""
+    """Compute nth Fibonacci number using naive matrix multiplication."""
     return naive_matrix_power([1, 1, 1, 0], index)[1]
+
+
+def matrix_power(mtrx_a, exp):
+    if exp == 0:
+        return [1, 0, 0, 1]
+    if exp == 1:
+        return mtrx_a[:]
+
+    mtrx_b = mtrx_a[:]
+    num = 2
+
+    while num <= exp:
+        mtrx_b = multiply_matrix(mtrx_b, mtrx_b)
+        num *= 2
+
+    mtrx_r = matrix_power(mtrx_a, exp - num // 2)
+    return multiply_matrix(mtrx_b, mtrx_r)
+
+
+def fibo_matrix(index: int) -> int:
+    """Compute nth Fibonacci number using matrix multiplication."""
+    return matrix_power([1, 1, 1, 0], index)[1]
+
+
+def fibo_branched(index: int) -> int:
+    """Compute nth Fibonacci number by conditionally calling a helper function."""
+
+    if index < 7:
+        return fibo_while_loop(index)
+    if index < 15:
+        return fibo_for_loop(index)
+
+    return fibo_binet(index)
 
 
 # Add algorithm here to be included in unit testing and time profiling.
@@ -154,4 +192,6 @@ fibos: list[Callable] = [
     fibo_list_comp,
     fibo_generator,
     fibo_matrix_naive,
+    fibo_matrix,
+    fibo_branched,
 ]
