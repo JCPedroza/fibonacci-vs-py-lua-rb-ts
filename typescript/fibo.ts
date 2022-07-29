@@ -8,9 +8,6 @@
  * large values.
  */
 
-import { testAllFunctions } from './test'
-
-
 // Compute nth Fibonacci number using simple recursion.
 function fiboSimpleIf(index: number): number {
   if (index < 2) return index
@@ -140,9 +137,7 @@ function fiboBinet(index: number): number {
   return Math.trunc((p**index + q**index) / sqrt5 + 0.5)
 }
 
-
-// Algorithms to unit test and profile.
-const fibosToTest: Function[] = [
+export const fibos: Function[] = [
   fiboSimpleIf,
   fiboSimpleSwitch,
   fiboTailCall,
@@ -155,4 +150,6 @@ const fibosToTest: Function[] = [
   fiboGenerator
 ]
 
-testAllFunctions(fibosToTest)
+export default {
+  fibos
+}
