@@ -115,8 +115,8 @@ def fibo_binet(index: int) -> int:
     return int((p**index + q**index) / sqrt5 + 0.5)
 
 
+# Matrix-based helpers and solutions
 # http://www.oranlooney.com/post/fibonacci/
-# Helpers for fibo_matrix
 
 
 def multiply_matrix(mtrx_a, mtrx_b):
@@ -130,14 +130,14 @@ def naive_matrix_power(mtrx_a, exp):
     if exp == 0:
         return [1, 0, 0, 1]
 
-    mtrx_b = mtrx_a
+    mtrx_b = mtrx_a[:]
     for _ in range(exp - 1):
         mtrx_b = multiply_matrix(mtrx_b, mtrx_a)
 
     return mtrx_b
 
 
-def fibo_matrix(index: int) -> int:
+def fibo_matrix_naive(index: int) -> int:
     """Compute nth Fibonacci number using matrix multiplication."""
     return naive_matrix_power([1, 1, 1, 0], index)[1]
 
@@ -153,5 +153,5 @@ fibos: list[Callable] = [
     fibo_binet,
     fibo_list_comp,
     fibo_generator,
-    fibo_matrix,
+    fibo_matrix_naive,
 ]
