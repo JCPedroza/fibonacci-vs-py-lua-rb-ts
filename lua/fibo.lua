@@ -1,5 +1,3 @@
-local test = require 'test'
-
 -- Compute nth Fibonacci number using simple recursion with if statement.
 local function fibo_simple(index)
   if index < 2 then
@@ -62,8 +60,7 @@ local function fibo_binet(index)
   return math.floor((p^index + q^index) / sqrt5 + 0.5)
 end
 
--- Algorithms to unit test and profile.
-local fibos = {
+Fibos = {
   {fibo_simple, 'fibo_simple'},
   {fibo_tail_call, 'fibo_tail_call'},
   {fibo_memoized, 'fibo_memoized'},
@@ -71,4 +68,4 @@ local fibos = {
   {fibo_binet, 'fibo_binet'}
 }
 
-test.test_all_functions(fibos)
+return Fibos
