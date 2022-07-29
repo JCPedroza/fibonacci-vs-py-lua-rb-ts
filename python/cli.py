@@ -1,7 +1,13 @@
 import argparse
-from typing import Callable
+from typing import Any, Callable
 
-defaults = {"index": 27, "reps": 10}
+defaults = {
+    "index": 27,
+    "reps": 10,
+    "range_start": 3,
+    "range_end": 27,
+    "range_reps": 20,
+}
 
 
 def fun_name_len(fun: Callable) -> int:
@@ -41,17 +47,32 @@ def parse_args():
 
     parser = argparse.ArgumentParser("parser")
     parser.add_argument("--index", help="index", type=int)
-    parser.add_argument("--reps", help="reps", type=int)
+    parser.add_argument("--reps", help="repetitions", type=int)
+    parser.add_argument("--range_start", help="start of range", type=int)
+    parser.add_argument("--range_end", help="end of range", type=int)
+    parser.add_argument("--range_reps", help="range repetitions", type=int)
 
     return parser.parse_args()
+
+
+def ask_param(cli_args, param_key) -> int:
+    args_dict = vars(cli_args)
+
+    if args_dict[param_key] is not None:
+        return args_dict[param_key]
+
+    return ask_int(param_key, defaults[param_key])
 
 
 def ask_params(cli_args) -> tuple[int, int]:
     """Ask user for the program parameters."""
 
     print()
-    index = cli_args.index or ask_int("index", defaults["index"])
-    reps = cli_args.reps or ask_int("reps", defaults["reps"])
+    index = ask_param(cli_args, "index")
+    reps = ask_param(cli_args, "reps")
+    range_start = ask_param(cli_args, "range_start")
+    range_end = ask_param(cli_args, "range_end")
+    range_reps = ask_param(cli_args, "range_reps")
     print()
 
-    return index, reps
+    return index, reps, range_start, range_end, range_reps
