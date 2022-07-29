@@ -1,16 +1,9 @@
 """
-Min python version: 3.10
-
-Different implementations of the "find the nth Fibonacci number" algorithm,
-with unit tests and time profiling.
+Different implementations of the "find the nth Fibonacci number" algorithm
 """
 
 from math import sqrt
 from typing import Callable
-
-from test import test_all
-from cli import parse_args, ask_params
-from profile import profile_all, profile_all_range
 
 
 def fibo_simple_if(index: int) -> int:
@@ -162,13 +155,3 @@ fibos: list[Callable] = [
     fibo_generator,
     fibo_matrix,
 ]
-
-
-if __name__ == "__main__":
-    cli_args = parse_args()
-    index, reps = ask_params(cli_args)
-    test_all(fibos)
-    profile_all(fibos, index, reps)
-    profile_all_range(fibos, 3, 27, 10)
-
-# TODO range profile parameters from cli
