@@ -1,6 +1,6 @@
 Test = {}
 
--- Check that a function evaluates to the expected output
+-- Check that function applied to arguments evaluates to the expected output
 local function assert_equals(fun, arg, out)
   local result = fun[1](arg)
   local passed = result == out
@@ -16,7 +16,7 @@ local function assert_equals(fun, arg, out)
   )
 end
 
--- Run all unit tests assertions for one function.
+-- Run all unit test assertions for one function.
 local function assert_all(fun)
   assert_equals(fun, 0, 0)
   assert_equals(fun, 1, 1)
@@ -28,7 +28,7 @@ local function assert_all(fun)
   assert_equals(fun, 30, 832040)
 end
 
--- Perform unit tests for one algorithm.
+-- Perform unit tests for one function.
 local function test_function(fun)
   print(string.format('Testing algorithm %s...', fun[2]))
   assert_all(fun)
