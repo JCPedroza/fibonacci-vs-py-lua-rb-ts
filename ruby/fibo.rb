@@ -1,5 +1,3 @@
-require_relative "./test.rb"
-
 # Compute nth Fibonacci number using simple recursion and an if statement.
 def fibo_simple_if(index)
   return index if index < 2
@@ -50,12 +48,10 @@ def fibo_binet(index)
   ((p**index + q**index) / sqrt5 + 0.5).to_i
 end
 
-fibs_to_test = [
+FIBS = [
   method(:fibo_simple_if),
   method(:fibo_simple_case),
   method(:fibo_tail_call),
   method(:fibo_times_loop),
   method(:fibo_binet)
 ]
-
-fibs_to_test.each { |fibo| puts(fibo.call(6)) }
