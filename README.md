@@ -12,6 +12,7 @@ The "compute the nth Fibonacci number" algorithm implemented, tested, and profil
 ```bash
 # Python 3.10
 python python/main.py
+python python/main.py --index 15 --reps 20 --range_start 0 --range_end 5 --range_reps 20
 
 # Lua 5.1
 lua lua/main.lua
