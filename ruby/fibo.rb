@@ -1,3 +1,5 @@
+require_relative "./test.rb"
+
 # Compute nth Fibonacci number using simple recursion and an if statement.
 def fibo_simple_if(index)
   return index if index < 2
